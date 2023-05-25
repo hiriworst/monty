@@ -7,23 +7,23 @@
  */
 void m_pstr(stack_t **stack, unsigned int line_number)
 {
-	stack_t *tmp = *stack;
+	stack_t *adc = *stack;
 	char str[1028];
 	size_t i = 0;
 	(void)line_number;
 
-	if (!tmp)
+	if (!adc)
 	{
 		printf("\n");
 		return;
 	}
-	for (; tmp->next; tmp = tmp->next)
+	for (; adc->next; adc = adc->next)
 		;
-	for (; tmp && tmp->n; tmp = tmp->prev, i++)
+	for (; adc && adc->n; adc = adc->prev, i++)
 	{
-		if (tmp->n <= 0 || tmp->n > 126)
+		if (adc->n <= 0 || adc->n > 126)
 			break;
-		str[i] = tmp->n;
+		str[i] = adc->n;
 	}
 	str[i] = '\0';
 	printf("%s\n", str);
@@ -54,18 +54,18 @@ int isint(char *s)
  */
 void m_rotl(stack_t **stack, unsigned int line_number)
 {
-	stack_t *tmp = *stack;
+	stack_t *adc = *stack;
 	(void)line_number;
 
 	if (!(*stack) || !((*stack)->next))
 		return;
-	for (; tmp->next; tmp = tmp->next)
+	for (; adc->next; adc = adc->next)
 		;
-	tmp->prev->next = NULL;
-	tmp->prev = NULL;
-	tmp->next = *stack;
-	(*stack)->prev = tmp;
-	*stack = tmp;
+	adc->prev->next = NULL;
+	adc->prev = NULL;
+	adc->next = *stack;
+	(*stack)->prev = adc;
+	*stack = adc;
 }
 /**
  * m_rotr - rotates the stack to the bottom
@@ -74,18 +74,18 @@ void m_rotl(stack_t **stack, unsigned int line_number)
  */
 void m_rotr(stack_t **stack, unsigned int line_number)
 {
-	stack_t *tmp = *stack;
+	stack_t *adc = *stack;
 	(void)line_number;
 
 	if (!(*stack) || !((*stack)->next))
 		return;
-	for (; tmp->next; tmp = tmp->next)
+	for (; adc->next; adc = adc->next)
 		;
-	tmp->next = *stack;
-	(*stack)->prev = tmp;
+	adc->next = *stack;
+	(*stack)->prev = adc;
 	(*stack)->next->prev = NULL;
 	*stack = (*stack)->next;
-	tmp->next->next = NULL;
+	adc->next->next = NULL;
 }
 /**
  * m_queue - changes structure to queue mode
@@ -94,14 +94,13 @@ void m_rotr(stack_t **stack, unsigned int line_number)
  */
 void m_queue(stack_t **stack, unsigned int line_number)
 {
-	cmds *tmp = head;
+	cmds *adc = head;
 	(void)stack;
 	(void)line_number;
 
-	if (!tmp->mode)
+	if (!adc->mode)
 	{
-		for (; tmp; tmp = tmp->next)
-			tmp->mode = 1;
+		for (; adc; adc = adc->next)
+			adc->mode = 1;
 	}
 }
-
