@@ -11,7 +11,7 @@
 
 void m_push(stack_t **stack, unsigned int line_number)
 {
-	stack_t *new_node = NULL, *tmp = *stack;
+	stack_t *new_node = NULL, *adc = *stack;
 
 	if (head->mode)
 	{
@@ -41,10 +41,10 @@ void m_push(stack_t **stack, unsigned int line_number)
 		*stack = new_node;
 		return;
 	}
-	while (tmp->next)
-		tmp = tmp->next;
-	tmp->next = new_node;
-	new_node->prev = tmp;
+	while (adc->next)
+		adc = adc->next;
+	adc->next = new_node;
+	new_node->prev = adc;
 }
 
 /**
@@ -58,17 +58,17 @@ void m_push(stack_t **stack, unsigned int line_number)
 
 void m_pall(stack_t **stack, unsigned int line_number)
 {
-	stack_t *tmp = *stack;
+	stack_t *adc = *stack;
 	(void)line_number;
 
-	if (tmp == NULL)
+	if (adc == NULL)
 		return;
-	while (tmp->next != NULL)
-		tmp = tmp->next;
-	while (tmp)
+	while (adc->next != NULL)
+		adc = adc->next;
+	while (adc)
 	{
-		printf("%d\n", tmp->n);
-		tmp = tmp->prev;
+		printf("%d\n", adc->n);
+		adc = adc->prev;
 	}
 }
 
@@ -130,14 +130,14 @@ void execute_ops(stack_t **stack)
 
 void freell(stack_t **stack)
 {
-	stack_t *tmp = NULL;
-	cmds *tmp2 = NULL;
+	stack_t *adc = NULL;
+	cmds *adc2 = NULL;
 
-	for (; *stack; *stack = (*stack)->next, free(tmp))
-		tmp = *stack;
-	for (; head; head = head->next, free(tmp2))
+	for (; *stack; *stack = (*stack)->next, free(adc))
+		adc = *stack;
+	for (; head; head = head->next, free(adc2))
 	{
-		tmp2 = head;
+		adc2 = head;
 		free(head->cmd[1]);
 		free(head->cmd[0]);
 	}
