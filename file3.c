@@ -10,10 +10,10 @@
 
 void m_sub(stack_t **stack, unsigned int line_number)
 {
-	stack_t *tmp = *stack;
+	stack_t *adc = *stack;
 	size_t i = 1;
 
-	for (; tmp && tmp->next; tmp = tmp->next, i++)
+	for (; adc && adc->next; adc = adc->next, i++)
 		;
 	if (i < 2)
 	{
@@ -21,7 +21,7 @@ void m_sub(stack_t **stack, unsigned int line_number)
 		freell(stack);
 		exit(EXIT_FAILURE);
 	}
-	tmp->prev->n -= tmp->n;
+	adc->prev->n -= adc->n;
 	m_pop(stack, line_number);
 }
 
@@ -35,10 +35,10 @@ void m_sub(stack_t **stack, unsigned int line_number)
 
 void m_div(stack_t **stack, unsigned int line_number)
 {
-	stack_t *tmp = *stack;
+	stack_t *adc = *stack;
 	size_t i = 1;
 
-	for (; tmp && tmp->next; tmp = tmp->next, i++)
+	for (; adc && adc->next; adc = adc->next, i++)
 		;
 	if (i < 2)
 	{
@@ -46,14 +46,14 @@ void m_div(stack_t **stack, unsigned int line_number)
 		freell(stack);
 		exit(EXIT_FAILURE);
 	}
-	if (!(tmp->n))
+	if (!(adc->n))
 	{
 		dprintf(STDERR_FILENO, "L%d: division by zero\n", line_number);
 		freell(stack);
 		exit(EXIT_FAILURE);
 	}
 
-	tmp->prev->n /= tmp->n;
+	adc->prev->n /= adc->n;
 	m_pop(stack, line_number);
 }
 
@@ -68,10 +68,10 @@ void m_div(stack_t **stack, unsigned int line_number)
 
 void m_mul(stack_t **stack, unsigned int line_number)
 {
-	stack_t *tmp = *stack;
+	stack_t *adc = *stack;
 	size_t i = 1;
 
-	for (; tmp && tmp->next; tmp = tmp->next, i++)
+	for (; adc && adc->next; adc = adc->next, i++)
 		;
 	if (i < 2)
 	{
@@ -80,7 +80,7 @@ void m_mul(stack_t **stack, unsigned int line_number)
 		exit(EXIT_FAILURE);
 	}
 
-	tmp->prev->n *= tmp->n;
+	adc->prev->n *= adc->n;
 	m_pop(stack, line_number);
 }
 
@@ -96,10 +96,10 @@ void m_mul(stack_t **stack, unsigned int line_number)
 
 void m_mod(stack_t **stack, unsigned int line_number)
 {
-	stack_t *tmp = *stack;
+	stack_t *adc = *stack;
 	size_t i = 1;
 
-	for (; tmp && tmp->next; tmp = tmp->next, i++)
+	for (; adc && adc->next; adc = adc->next, i++)
 		;
 	if (i < 2)
 	{
@@ -107,14 +107,14 @@ void m_mod(stack_t **stack, unsigned int line_number)
 		freell(stack);
 		exit(EXIT_FAILURE);
 	}
-	if (!(tmp->n))
+	if (!(adc->n))
 	{
 		dprintf(STDERR_FILENO, "L%d: division by zero\n", line_number);
 		freell(stack);
 		exit(EXIT_FAILURE);
 	}
 
-	tmp->prev->n %= tmp->n;
+	adc->prev->n %= adc->n;
 	m_pop(stack, line_number);
 }
 /**
@@ -124,22 +124,22 @@ void m_mod(stack_t **stack, unsigned int line_number)
  */
 void m_pchar(stack_t **stack, unsigned int line_number)
 {
-	stack_t *tmp = *stack;
+	stack_t *adc = *stack;
 
-	if (!tmp)
+	if (!adc)
 	{
 		dprintf(STDERR_FILENO, "L%d: can't pchar, stack empty\n", line_number);
 		freell(stack);
 		exit(EXIT_FAILURE);
 	}
-	for (; tmp->next; tmp = tmp->next)
+	for (; adc->next; adc = adc->next)
 		;
-	if (tmp->n < 0 || tmp->n > 126)
+	if (adc->n < 0 || adc->n > 126)
 	{
 		dprintf(STDERR_FILENO, "L%d: can't pchar, value out of range\n",
 				line_number);
 		freell(stack);
 		exit(EXIT_FAILURE);
 	}
-	printf("%c\n", tmp->n);
+	printf("%c\n", adc->n);
 }
