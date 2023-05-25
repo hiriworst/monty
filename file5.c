@@ -7,14 +7,14 @@
  */
 void m_stack(stack_t **stack, unsigned int line_number)
 {
-	cmds *tmp = head;
+	cmds *adc = head;
 	(void)stack;
 	(void)line_number;
 
-	if (tmp->mode)
+	if (adc->mode)
 	{
-		for (; tmp; tmp = tmp->next)
-			tmp->mode = 0;
+		for (; adc; adc = adc->next)
+			adc->mode = 0;
 	}
 }
 
