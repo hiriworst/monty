@@ -1,45 +1,67 @@
 #include "monty.h"
-bus_t bus = {NULL, NULL, NULL, 0};
+
+cmds *head = NULL;
+
 /**
-* main - monty code interpreter
-* @argc: number of arguments
-* @argv: monty file location
-* Return: 0 on success
-*/
-int main(int argc, char *argv[])
+ * check_blank - checks for blank spaces
+ * @s: source string
+ * Return: 0 if successful, 1 otherwise
+ */
+int check_blank(char *s)
 {
-	char *content;
-	FILE *file;
-	size_t size = 0;
-	ssize_t read_line = 1;
-	stack_t *stack = NULL;
-	unsigned int counter = 0;
+	size_t i = 0;
+
+	for (; s[i] && (s[i] == ' ' || s[i] == '\t'); i++)
+		;
+	if (s[i] == '\0')
+		return (0);
+	return (1);
+}
+/**
+ * main - entry point, evaluates path name.
+ * @argc: number of arguments.
+ * @argv: array of arguments.
+ * Return: EXIT_SUCCESS, EXIT_FAILURE.
+ */
+int main(int argc, char **argv)
+{
+	FILE *f;
+	char *s = NULL;
+	size_t n, i;
+	int r;
+	stack_t *stk = NULL;
+	cmds *tmp2;
 
 	if (argc != 2)
 	{
-		fprintf(stderr, "USAGE: monty file\n");
+		dprintf(STDERR_FILENO, "USAGE: monty file\n");
 		exit(EXIT_FAILURE);
 	}
-	file = fopen(argv[1], "r");
-	bus.file = file;
-	if (!file)
+	f = fopen(argv[1], "r");
+	if (!f)
 	{
-		fprintf(stderr, "Error: Can't open file %s\n", argv[1]);
+		dprintf(STDERR_FILENO, "Error: Can't open file %s\n", argv[1]);
 		exit(EXIT_FAILURE);
 	}
-	while (read_line > 0)
+	for (i = 1; (r = getline(&s, &n, f)) != EOF; i++)
 	{
-		content = NULL;
-		read_line = getline(&content, &size, file);
-		bus.content = content;
-		counter++;
-		if (read_line > 0)
+		s[r - 1] = '\0';
+		if (!check_blank(s) || m_com(&s) || !(*s))
+			continue;
+		if (!command_builder(&head, s, i))
 		{
-			execute(content, &stack, counter, file);
+			dprintf(STDERR_FILENO, "Error: malloc failed\n");
+			freell(&stk);
+			exit(EXIT_FAILURE);
 		}
-		free(content);
 	}
-	free_stack(stack);
-	fclose(file);
-return (0);
+	free(s), fclose(f);
+	for (; head; free(tmp2->cmd[1]), free(tmp2->cmd[0]), free(tmp2))
+	{
+		tmp2 = head;
+		execute_ops(&stk);
+		head = head->next;
+	}
+	freell(&stk);
+	return (EXIT_SUCCESS);
 }
