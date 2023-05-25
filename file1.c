@@ -10,17 +10,17 @@
 
 void mega_pint(stack_t **stack, unsigned int line_number)
 {
-	stack_t *tmp = *stack;
+	stack_t *adc = *stack;
 
-	if (!tmp)
+	if (!adc)
 	{
 		dprintf(STDERR_FILENO, "L%d: can't pint, stack empty\n", line_number);
 		freell(stack);
 		exit(EXIT_FAILURE);
 	}
-	for (; tmp->next; tmp = tmp->next)
+	for (; adc->next; adc = adc->next)
 		;
-	printf("%d\n", tmp->n);
+	printf("%d\n", adc->n);
 
 }
 
@@ -34,9 +34,9 @@ void mega_pint(stack_t **stack, unsigned int line_number)
 
 void m_pop(stack_t **stack, unsigned int line_number)
 {
-	stack_t *tmp = *stack, *tmp2 = NULL;
+	stack_t *adc = *stack, *adc2 = NULL;
 
-	if (!tmp)
+	if (!adc)
 	{
 		dprintf(STDERR_FILENO, "L%d: can't pop an empty stack\n", line_number);
 		freell(stack);
@@ -48,11 +48,11 @@ void m_pop(stack_t **stack, unsigned int line_number)
 		*stack = NULL;
 		return;
 	}
-	for (; tmp && tmp->next; tmp = tmp->next)
+	for (; adc && adc->next; adc = adc->next)
 		;
-	tmp2 = tmp;
-	tmp->prev->next = NULL;
-	free(tmp2);
+	adc2 = adc;
+	adc->prev->next = NULL;
+	free(adc2);
 }
 
 /**
@@ -65,10 +65,10 @@ void m_pop(stack_t **stack, unsigned int line_number)
 
 void m_swap(stack_t **stack, unsigned int line_number)
 {
-	stack_t *tmp = *stack;
+	stack_t *adc = *stack;
 	size_t i = 1;
 
-	for (; tmp && tmp->next; tmp = tmp->next, i++)
+	for (; adc && adc->next; adc = adc->next, i++)
 		;
 	if (i < 2)
 	{
@@ -78,18 +78,18 @@ void m_swap(stack_t **stack, unsigned int line_number)
 	}
 	if (i == 2)
 	{
-		(*stack)->prev = tmp;
-		tmp->next = (*stack);
+		(*stack)->prev = adc;
+		adc->next = (*stack);
 		(*stack)->next = NULL;
-		*stack = tmp;
+		*stack = adc;
 		(*stack)->prev = NULL;
 		return;
 	}
-	tmp->prev = tmp->prev->prev;
-	tmp->prev->next->next = NULL;
-	tmp->next = tmp->prev->next;
-	tmp->prev->next->prev = tmp;
-	tmp->prev->next = tmp;
+	adc->prev = adc->prev->prev;
+	adc->prev->next->next = NULL;
+	adc->next = adc->prev->next;
+	adc->prev->next->prev = adc;
+	adc->prev->next = adc;
 }
 
 /**
@@ -102,10 +102,10 @@ void m_swap(stack_t **stack, unsigned int line_number)
 
 void m_add(stack_t **stack, unsigned int line_number)
 {
-	stack_t *tmp = *stack;
+	stack_t *adc = *stack;
 	size_t i = 1;
 
-	for (; tmp && tmp->next; tmp = tmp->next, i++)
+	for (; adc && adc->next; adc = adc->next, i++)
 		;
 	if (i < 2)
 	{
@@ -113,7 +113,7 @@ void m_add(stack_t **stack, unsigned int line_number)
 		freell(stack);
 		exit(EXIT_FAILURE);
 	}
-	tmp->prev->n += tmp->n;
+	adc->prev->n += adc->n;
 	m_pop(stack, line_number);
 }
 
@@ -130,4 +130,3 @@ void m_nop(stack_t **stack, unsigned int line_number)
 	(void)stack;
 	(void)line_number;
 }
-
