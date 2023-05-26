@@ -30,7 +30,7 @@ int main(int argc, char **argv)
 	size_t n, i;
 	int r;
 	stack_t *stk = NULL;
-	cmds *tmp2;
+	cmds *adc2;
 
 	if (argc != 2)
 	{
@@ -56,9 +56,9 @@ int main(int argc, char **argv)
 		}
 	}
 	free(s), fclose(f);
-	for (; head; free(tmp2->cmd[1]), free(tmp2->cmd[0]), free(tmp2))
+	for (; head; free(adc2->cmd[1]), free(adc2->cmd[0]), free(adc2))
 	{
-		tmp2 = head;
+		adc2 = head;
 		execute_ops(&stk);
 		head = head->next;
 	}
