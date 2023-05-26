@@ -9,7 +9,7 @@
  */
 cmds *command_builder(cmds **head, char *s, int i)
 {
-	cmds *tmp = *head, *new = NULL;
+	cmds *adc = *head, *new = NULL;
 	char *str;
 
 	new = malloc(sizeof(cmds));
@@ -42,9 +42,9 @@ cmds *command_builder(cmds **head, char *s, int i)
 		*head = new;
 		return (new);
 	}
-	for (; tmp->next; tmp = tmp->next)
+	for (; adc->next; adc = adc->next)
 		continue;
-	tmp->next = new;
+	adc->next = new;
 	return (new);
 }
 
